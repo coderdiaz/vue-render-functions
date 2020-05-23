@@ -3,13 +3,37 @@ import Suscription from './Suscription.vue';
 
 export default {
   name: 'SuscriptionList',
-  render (createElement) {
-    return createElement(
-      'div', {
-        class: 'py-6'
+  props: {
+    items: {
+      type: Array,
+      default: () => {
+        return [];
       },
-      Array.from(Array(10).keys()).map(n => <Suscription amount={n} />),
-    );
+    },
+  },
+  render (createElement) {
+    if (this.items.length) {
+      return createElement(
+        'div', {
+          class: 'pt-6',
+        },
+        this.items.map(n => createElement(Suscription, {
+          props: {
+            name: n.name,
+            description: n.description,
+            amount: n.amount,
+            color: n.color,
+          },
+        })),
+      );
+    } else {
+      return createElement(
+        'div', {
+          class: 'border-2 p-6 mt-4 border-dashed border-gray-600 rounded',
+        },
+        [createElement('p', { class: 'text-gray-600 text-center' }, 'No items found')],
+      );
+    }
   },
 };
 </script>
